@@ -1,0 +1,9 @@
+import wollok.game.*
+import codigoRaton.*
+
+program rataThief {
+
+    juego.iniciar()
+    game.start()
+    
+}
