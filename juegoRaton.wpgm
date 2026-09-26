@@ -1,9 +1,14 @@
 import wollok.game.*
 import codigoRaton.*
+import cidigoComida.*
+
+
 
 program rataThief {
 
+    game.addVisual(marcador)
     juego.iniciar()
     game.start()
     
 }
+

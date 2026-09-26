@@ -1,65 +1,60 @@
 import wollok.game.*
+import cidigoComida.*
+
+
 
 object juego {
-    method iniciar() {
+    const property comidas = []
 
+    method iniciar() {
         game.width(20)
         game.height(14)
         game.addVisualCharacter(raton) 
 
-
         game.onCollideDo(raton, { algo=> algo.teAgarroRaton() })
 
         self.generarComidas()
-
     }
 
     method generarComidas() {
         game.schedule(500, {
-            self.crearComida(10)
-            self.crearComida(10)
-            self.crearComida(10)
-            self.crearComida(10)
-            self.crearComida(10)
+            self.crearComidaAlAzar()
+            self.crearComidaAlAzar()
+            self.crearComidaAlAzar()
+            self.crearComidaAlAzar()
+            self.crearComidaAlAzar()
         })
     }
 
-    method crearComida(puntos) {
+    method crearComidaAlAzar() {
         const pos = self.posicionAlAzar()
-        const comida = new Comida(position = pos, puntos = puntos)
-        game.addVisual(comida)
+        
+        const tipoComida = [
+            new Pizza(position = pos),
+            new Queso(position = pos),
+            new Burger(position = pos)
+        ].anyOne()
+
+        comidas.add(tipoComida)
+        game.addVisual(tipoComida)
+    }
+
+    method removerComida(comida) {
+        comidas.remove(comida)
     }
 
     method posicionAlAzar() = game.at(
         0.randomUpTo(game.width()-1),
         0.randomUpTo(game.height()-1)
     )
-
 }
 
 object raton {
     var property position = game.center()
-    var puntaje = 0
 
-    method aumentar(puntos) {
-        puntaje += puntos
-        game.say(self, "Tengo " + puntaje.toString() + " puntos")
+    method aumentar(cantidad) {
+        marcador.sumar(cantidad) 
     }
 
-    method image() = "assets/raton.png"
-    
-
-}
-
-class Comida {
-    var puntos
-    const property position
-
-    method teAgarroRaton() {
-        raton.aumentar(puntos)
-        game.removeVisual(self)
-    }
-
-    method image() = "assets/comida.png"
-
+    method image() = "rata.png"
 }
